@@ -7,10 +7,13 @@ on:
             - main
         paths:
             - "latex/**"
+            - ".github/workflows/build-latex.yml"
 
 jobs:
     build:
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
 
         steps:
             - name: Checkout repository
