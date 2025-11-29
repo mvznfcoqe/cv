@@ -1,0 +1,50 @@
+name: Build LaTeX CVs
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - "latex/**"
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Compile LaTeX (English)
+              uses: xu-cheng/latex-action@v4
+              with:
+                  root_file: en.tex
+                  working_directory: latex/en
+                  args: -pdf -interaction=nonstopmode -file-line-error
+
+            - name: Compile LaTeX (Russian)
+              uses: xu-cheng/latex-action@v4
+              with:
+                  root_file: ru.tex
+                  working_directory: latex/ru
+                  args: -pdf -interaction=nonstopmode -file-line-error
+
+            - name: Create PDF directories
+              run: |
+                  mkdir -p pdf/en
+                  mkdir -p pdf/ru
+
+            - name: Move PDFs to output directory
+              run: |
+                  mv latex/en/en.pdf pdf/en/en.pdf
+                  mv latex/ru/ru.pdf pdf/ru/ru.pdf
+
+            - name: Commit and push PDFs
+              run: |
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+                  git add pdf/en/en.pdf pdf/ru/ru.pdf
+                  git diff --staged --quiet || git commit -m "Update compiled PDFs [skip ci]"
+                  git push
