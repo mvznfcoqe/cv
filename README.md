@@ -1,2 +1,2 @@
-ru https://mvznfcoqe.github.io/cv/ru/ru.pdf
-en https://mvznfcoqe.github.io/cv/en/en.pdf
+ru https://nrldev.github.io/cv/ru/ru.pdf
+en https://nrldev.github.io/cv/en/en.pdf
